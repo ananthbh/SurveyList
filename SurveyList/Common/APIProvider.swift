@@ -11,7 +11,7 @@ import Alamofire
 
 enum SurveyAPIProvider: TargetType {
     
-    case authenticate(userName:String,password:String)
+    case authenticate
     
 }
 extension SurveyAPIProvider {
@@ -25,6 +25,7 @@ extension SurveyAPIProvider {
     
     public var method: Moya.Method {
         switch self {
+        case .authenticate: return .post
            default: return .get
         }
     }
@@ -39,13 +40,21 @@ extension SurveyAPIProvider {
     
     public var parameters: [String: Any]? {
         switch self {
+        
+        case .authenticate:
+            var params = [String: Any]()
+            params["grant_type"] = "password"
+            params["username"] = "carlos@nimbl3.com"
+            params["password"] = "antikera"
+            return params
         default:
             return nil
         }
     }
-    
+
     public var parameterEncoding: ParameterEncoding {
         switch self {
+        case .authenticate: return URLEncoding.default
         default: return JSONEncoding.default
         }
     }
@@ -71,6 +80,7 @@ extension SurveyAPIProvider: XAuthAuthorizable {
     
     public var shouldXAuthAuthorize: Bool {
         switch self {
+        case  .authenticate: return false
         default: return true
         }
     }
