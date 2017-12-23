@@ -23,6 +23,7 @@
 		4E2CF2BA1FEEB87D009E71C3 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2CF2B91FEEB87D009E71C3 /* KeyChain.swift */; };
 		4E2CF2BE1FEEBE58009E71C3 /* CommonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2CF2BD1FEEBE58009E71C3 /* CommonHelpers.swift */; };
 		4E2CF2C01FEEC3EF009E71C3 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2CF2BF1FEEC3EF009E71C3 /* NetworkHelper.swift */; };
+		4E9FC8D31FEEEB8A007BCE9E /* SurveyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9FC8D21FEEEB8A007BCE9E /* SurveyCoordinator.swift */; };
 		A59195E2532FD410E9AF5767 /* Pods_SurveyList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1BF1D140369CA65AD171C0 /* Pods_SurveyList.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		4E2CF2B91FEEB87D009E71C3 /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		4E2CF2BD1FEEBE58009E71C3 /* CommonHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonHelpers.swift; sourceTree = "<group>"; };
 		4E2CF2BF1FEEC3EF009E71C3 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
+		4E9FC8D21FEEEB8A007BCE9E /* SurveyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyCoordinator.swift; sourceTree = "<group>"; };
 		5C15BE8BB5DB056DFBC60AE5 /* Pods-SurveyListTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SurveyListTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SurveyListTests/Pods-SurveyListTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8D3DABE462F41F83B3B21B0B /* Pods_SurveyListUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SurveyListUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A75B7AA6077EEF121883F712 /* Pods-SurveyListUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SurveyListUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SurveyListUITests/Pods-SurveyListUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				4E2CF2AB1FEEB30F009E71C3 /* Common */,
+				4E9FC8D11FEEEB60007BCE9E /* Survey */,
 				4E0E919C1FEEAE6F004B1C9E /* Assets.xcassets */,
 				4E0E919E1FEEAE6F004B1C9E /* LaunchScreen.storyboard */,
 				4E0E91A11FEEAE6F004B1C9E /* Info.plist */,
@@ -169,6 +172,14 @@
 				4E2CF2BF1FEEC3EF009E71C3 /* NetworkHelper.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		4E9FC8D11FEEEB60007BCE9E /* Survey */ = {
+			isa = PBXGroup;
+			children = (
+				4E9FC8D21FEEEB8A007BCE9E /* SurveyCoordinator.swift */,
+			);
+			path = Survey;
 			sourceTree = "<group>";
 		};
 		97977CA8840AAA529585C45F /* Pods */ = {
@@ -501,6 +512,7 @@
 				4E2CF2AD1FEEB32B009E71C3 /* AppCoordinator.swift in Sources */,
 				4E2CF2B81FEEB870009E71C3 /* Service.swift in Sources */,
 				4E2CF2C01FEEC3EF009E71C3 /* NetworkHelper.swift in Sources */,
+				4E9FC8D31FEEEB8A007BCE9E /* SurveyCoordinator.swift in Sources */,
 				4E2CF2B61FEEB74C009E71C3 /* XAuthTokenPlugin.swift in Sources */,
 				4E2CF2B11FEEB629009E71C3 /* APIProvider.swift in Sources */,
 				4E0E91961FEEAE6F004B1C9E /* AppDelegate.swift in Sources */,
