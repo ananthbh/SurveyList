@@ -49,8 +49,8 @@ public final class CredentialsProvider: Service {
             createdAt = defaults.double(forKey: StoredCredentialsKeys.kCreatedAt)
         }
         
-        if let tokenTypeValue = KeyChain.load(key: StoredCredentialsKeys.kTokenType) {
-            tokenType = tokenTypeValue
+        if defaults.value(forKey: StoredCredentialsKeys.kTokenType) != nil {
+            tokenType = defaults.string(forKey: StoredCredentialsKeys.kTokenType)
         }
     }
     
@@ -59,8 +59,7 @@ public final class CredentialsProvider: Service {
         KeyChain.save(key: StoredCredentialsKeys.kTokenKey, string: token)
         defaults.set(expires!, forKey: StoredCredentialsKeys.kExpirationKey)
         defaults.set(createdAt!, forKey: StoredCredentialsKeys.kCreatedAt)
-        guard let tokentypeValue = tokenType else { return }
-        KeyChain.save(key: StoredCredentialsKeys.kTokenType, string: tokentypeValue)
+        defaults.set(tokenType!, forKey: StoredCredentialsKeys.kTokenType)
     }
     
     func clearCredentials() {
@@ -75,8 +74,9 @@ public final class CredentialsProvider: Service {
             defaults.synchronize()
         }
         
-        if tokenType != nil {
-            KeyChain.delete(key: StoredCredentialsKeys.kTokenType)
+        if defaults.value(forKey: StoredCredentialsKeys.kTokenType) != nil {
+            defaults.removeObject(forKey: StoredCredentialsKeys.kTokenType)
+            defaults.synchronize()
         }
      }
 
