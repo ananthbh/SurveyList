@@ -13,7 +13,6 @@ final class NetworkProvider: MoyaProvider<SurveyAPIProvider>, Service {
     
     private var credentialsProvider:CredentialsProvider
     
-    
     var сancellableRequest: Cancellable?
     var onUserTokenDied: EmptyClosureType?
     
@@ -31,17 +30,17 @@ final class NetworkProvider: MoyaProvider<SurveyAPIProvider>, Service {
                           progress: ProgressBlock? = .none,
                           completion: @escaping Completion) -> Cancellable {
         guard credentialsProvider.tokenExpired else { return proceedRequest(target, completion: completion) }
-        let username = credentialsProvider.username
-        let password = credentialsProvider.password
-        return super.request(.authenticate(userName: username, password: password), completion: { (result) in
+        return super.request(.authenticate, completion: { (result) in
             switch result {
             case .success(let response):
                 do {
                     let json = try response.mapJSON() as! [String:Any]
-                    if let token = json["token"] as? String,
-                        let expires = json["expires"] as? Double {
+                    if let token = json["access_token"] as? String,
+                        let expires = json["expires_in"] as? Double, let created = json["created_at"] as? Double, let tokenType = json["token_type"] as? String {
                         self.credentialsProvider.token = token
-                        self.credentialsProvider.expires = expires/1000
+                        self.credentialsProvider.expires = expires
+                        self.credentialsProvider.createdAt = created
+                        self.credentialsProvider.tokenType = tokenType
                         self.credentialsProvider.saveCredentials()
                         self.proceedRequest(target, completion: completion)
                     } else {
