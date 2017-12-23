@@ -28,11 +28,10 @@ final class AppCoordinator {
                                                 plugins: plugins)
         provider.onUserTokenDied = { [weak self] in
             guard let uSelf = self else { return }
-            uSelf.startAuthFlow()
+            uSelf.checkAuthToken()
         }
         return provider
     }()
-    
     
     fileprivate var navigationController = UINavigationController()
     fileprivate var window: UIWindow
@@ -47,10 +46,22 @@ final class AppCoordinator {
     }
     
     public func start() {
-        
+        checkAuthToken()
     }
     
-    fileprivate func startAuthFlow() {
-        
+    fileprivate func checkAuthToken() {
+        networkProvider.request(.authenticate) { (result) in
+            switch result {
+            case .success(let response):
+                do {
+                    let json = try JSONSerialization.jsonObject(with: response.data, options: []) as! [String:Any]
+                    print("success json is \(json)")
+                } catch {
+                    print("failure in fetching auth token")
+                }
+            case .failure(let error):
+                print("failed in fetching data")
+            }
+        }
     }
 }
