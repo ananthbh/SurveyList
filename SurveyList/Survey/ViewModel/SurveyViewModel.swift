@@ -13,24 +13,30 @@ class SurveyViewModel {
     
     let provider: NetworkProvider
     
-    init(provider: NetworkProvider) {
+    var survey: Survey!
+    
+    init(survey:Survey, provider: NetworkProvider) {
         self.provider = provider
+        self.survey = survey
     }
     
-    func fetchSurveys() {
-        self.provider.request(.surveys) { (result) in
-            switch result {
-            case .success(let response):
-                do {
-                    let surveys = try response.map([Survey].self)
-                    print("the surveys are \(surveys)")
-                } catch {
-                    print("failed fetching surveys")
-                }
-            case .failure(let error):
-                print("failed fetched surveys")
-            }
+    var surveyName: String {
+        get {
+            return survey.name
         }
     }
+    
+    var surveyDescription: String {
+        get {
+            return survey.description
+        }
+    }
+    
+    var coverImageRequest: URLRequest {
+        get {
+            return ImageHelper.imageRequest(survey)
+        }
+    }
+    
     
 }

@@ -7,14 +7,19 @@
 //
 
 import UIKit
+import AlamofireImage
+import RxSwift
+import RxCocoa
 
 struct SurveyViewTransitions {
     
 }
 
 
-class SurveyViewController: UIViewController {
-
+class SurveyViewController: UIViewController, PageContentViewController {
+    
+    var pageIndex: Int = 0
+    
     var viewModel: SurveyViewModel!
     var transitions: SurveyViewTransitions!
     
@@ -34,8 +39,9 @@ class SurveyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.viewModel.fetchSurveys()
-        // Do any additional setup after loading the view.
+        setSurveyName()
+        setSurveyDescription()
+        setSurveyCoverImage()
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,15 +49,21 @@ class SurveyViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func setSurveyName() {
+        nameLabel.text = viewModel.surveyName
     }
-    */
+    
+    func setSurveyDescription() {
+        descriptionLabel.text = viewModel.surveyDescription
+    }
+    
+    func setSurveyCoverImage() {
+        
+        let filter = AspectScaledToFillSizeFilter(size: coverImage.frame.size)
+        
+        coverImage.af_setImage(withURLRequest: viewModel.coverImageRequest, placeholderImage: #imageLiteral(resourceName: "placeholder"), filter: filter, imageTransition: UIImageView.ImageTransition.crossDissolve(0.2), completion: nil)
+    }
+
+    
 
 }
