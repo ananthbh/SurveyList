@@ -92,7 +92,7 @@ class SurveyPageViewController: UIPageViewController {
     func fetchSurveys(page: Int, completion:@escaping () -> ()) {
         viewModel.fetchSurveys(page: page) {
             let controller = self.viewControllerAtIndex(self.currentPage)
-            self.setViewControllers([controller], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+            self.setViewControllers([controller], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
             completion()
         }
     }
