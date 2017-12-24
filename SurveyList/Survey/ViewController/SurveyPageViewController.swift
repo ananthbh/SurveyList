@@ -20,7 +20,12 @@ class SurveyPageViewController: UIPageViewController {
 
     private var viewModel: SurveyPageViewModel!
     private var transitions: SurveyPageViewTransitions!
-    private var currentPage = 0
+    fileprivate var pageIndicator = PageIndicatorView()
+    private var currentPage = 0 {
+        didSet {
+            self.pageIndicator.index = currentPage
+        }
+    }
     private var isFetchingSurveys = false
     var page = 1
     
@@ -43,12 +48,25 @@ class SurveyPageViewController: UIPageViewController {
         fetchSurveys(page: page) {
             self.hideHUD()
             self.setupNavigationbarandButtons()
+            self.setupPageIndicator()
         }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let bounds = self.view.bounds
+        let margin: CGFloat = 10
+        let maxHeight = bounds.height - margin * 2 - self.topLayoutGuide.length
+        let sizeConstraint = CGSize(width: bounds.width, height: maxHeight)
+        let viewSize = self.pageIndicator.sizeThatFits(sizeConstraint)
+        let x = bounds.width - viewSize.width - margin
+        let y = self.topLayoutGuide.length + margin
+        self.pageIndicator.frame = CGRect(x: x, y: y, width: viewSize.width, height: viewSize.height)
     }
     
     func surveyViewController(_ viewModel: SurveyViewModel) -> SurveyViewController {
@@ -77,6 +95,12 @@ class SurveyPageViewController: UIPageViewController {
         
     }
     
+    func setupPageIndicator() {
+        self.view.addSubview(self.pageIndicator);
+        self.pageIndicator.alpha = 1.0
+        self.pageIndicator.delegate = self
+    }
+    
     @objc func reload() {
         if isFetchingSurveys { return }
         isFetchingSurveys = true
@@ -91,6 +115,8 @@ class SurveyPageViewController: UIPageViewController {
     
     func fetchSurveys(page: Int, completion:@escaping () -> ()) {
         viewModel.fetchSurveys(page: page) {
+            self.pageIndicator.count = self.viewModel.numberOfSurveys
+            self.pageIndicator.index = self.currentPage
             let controller = self.viewControllerAtIndex(self.currentPage)
             self.setViewControllers([controller], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
             completion()
@@ -146,15 +172,34 @@ extension SurveyPageViewController: UIPageViewControllerDelegate {
         if let controller = pageViewController.viewControllers?.last as? PageContentViewController {
             currentPage = controller.pageIndex
             print("currentPage: \(currentPage)")
-            if viewModel.numberOfSurveys - currentPage == 3 {
+            if viewModel.numberOfSurveys == currentPage + 1 {
+                self.showHUD()
                 print("will fetch now")
                 self.page += 1
                 self.fetchSurveys(page: page, completion: {
+                    self.hideHUD()
                     print("done fetching new surveys")
                 })
             }
         }
     }
+}
+
+extension SurveyPageViewController: PageIndicatorViewDelegate {
+    func pageIndicatorViewNavigateNextAction(_ view: PageIndicatorView) {
+        let controller = self.viewControllerAtIndex(self.currentPage + 1)
+        self.setViewControllers([controller], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+    }
+    
+    func pageIndicatorViewNavigatePreviousAction(_ view: PageIndicatorView) {
+        let controller = self.viewControllerAtIndex(self.currentPage - 1)
+        self.setViewControllers([controller], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+    }
+    
+    func pageIndicatorView(_ view: PageIndicatorView, touchedIndicatorAtIndex index: Int) {
+        
+    }
+    
     
 }
 
