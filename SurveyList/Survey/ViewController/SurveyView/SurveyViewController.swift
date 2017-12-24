@@ -8,11 +8,27 @@
 
 import UIKit
 
+struct SurveyViewTransitions {
+    
+}
+
+
 class SurveyViewController: UIViewController {
 
+    var viewModel: SurveyViewModel!
+    var transitions: SurveyViewTransitions!
+    
+    convenience init(viewModel: SurveyViewModel,
+                     transitions: SurveyViewTransitions) {
+        self.init()
+        self.viewModel = viewModel
+        self.transitions = transitions
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.viewModel.fetchSurveys()
         // Do any additional setup after loading the view.
     }
 
