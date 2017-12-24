@@ -17,7 +17,7 @@ final class AppCoordinator {
         let loggerPlugin = NetworkLoggerPlugin(verbose: true,
                                                responseDataFormatter: JSONResponseDataFormatter)
         let authPlugin = XAuthTokenPlugin(tokenClosure: self.credentialsProvider.realToken)
-        let plugins:[PluginType] = [authPlugin,loggerPlugin]
+        let plugins:[PluginType] = [authPlugin]
         let stubClosure:(SurveyAPIProvider) -> Moya.StubBehavior = { target in
             switch target {
             default: return .never
@@ -65,10 +65,10 @@ final class AppCoordinator {
     }
     
     private func enterApp() {
-        currentSurveyCoordinator?.surveyViewController()
+        currentSurveyCoordinator?.surveyPageViewController()
     }
     
-    fileprivate func checkAuthToken(completion:() -> ()) {
+    fileprivate func checkAuthToken(completion:@escaping () -> ()) {
         networkProvider.request(.authenticate) { (result) in
             switch result {
             case .success(let response):
@@ -83,6 +83,7 @@ final class AppCoordinator {
                         self.credentialsProvider.tokenType = tokenType
                         self.credentialsProvider.saveCredentials()
                         self.enterApp()
+                        completion()
                     }
                 } catch {
                     print("failure in fetching auth token")
