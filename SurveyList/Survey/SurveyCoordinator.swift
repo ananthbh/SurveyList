@@ -7,13 +7,16 @@
 //
 
 import Foundation
+import UIKit
 
 final class SurveyCoordinator {
     
     private let networkProvider: NetworkProvider!
+    private let rootController: UINavigationController!
     
-    init(networkProvider: NetworkProvider) {
+    init(rootController: UINavigationController, networkProvider: NetworkProvider) {
         self.networkProvider = networkProvider
+        self.rootController = rootController
     }
     
     
