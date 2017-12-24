@@ -32,7 +32,7 @@ struct XAuthTokenPlugin: PluginType {
         }
         
         var request = request
-        request.addValue(authVal, forHTTPHeaderField: "access_token")
+        request.addValue(authVal, forHTTPHeaderField: "Authorization")
         
         return request
     }

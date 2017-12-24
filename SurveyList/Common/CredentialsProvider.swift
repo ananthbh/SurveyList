@@ -11,12 +11,14 @@ import Foundation
 public final class CredentialsProvider: Service {
     
     struct StoredCredentialsKeys {
+        static let kRealTokenKey  = "Authorization"
         static let kTokenKey      = "access_token"
         static let kExpirationKey = "expires_in"
         static let kCreatedAt     = "created_at"
         static let kTokenType     = "token_type"
     }
     
+    public var realToken: String?
     public var token: String?
     public var expires: Double?
     public var createdAt: Double?
@@ -55,14 +57,17 @@ public final class CredentialsProvider: Service {
     }
     
     func saveCredentials() {
-        guard let token = token else { return }
+        guard let token = token, let tokenType = tokenType else { return }
+        realToken = tokenType + " " + token
+        KeyChain.save(key: StoredCredentialsKeys.kRealTokenKey, string: realToken!)
         KeyChain.save(key: StoredCredentialsKeys.kTokenKey, string: token)
         defaults.set(expires!, forKey: StoredCredentialsKeys.kExpirationKey)
         defaults.set(createdAt!, forKey: StoredCredentialsKeys.kCreatedAt)
-        defaults.set(tokenType!, forKey: StoredCredentialsKeys.kTokenType)
+        defaults.set(tokenType, forKey: StoredCredentialsKeys.kTokenType)
     }
     
     func clearCredentials() {
+        KeyChain.delete(key: StoredCredentialsKeys.kRealTokenKey)
         KeyChain.delete(key: StoredCredentialsKeys.kTokenKey)
         if defaults.value(forKey: StoredCredentialsKeys.kExpirationKey) != nil {
             defaults.removeObject(forKey: StoredCredentialsKeys.kExpirationKey)
