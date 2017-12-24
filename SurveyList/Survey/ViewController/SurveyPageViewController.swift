@@ -22,6 +22,7 @@ class SurveyPageViewController: UIPageViewController {
                   navigationOrientation: .vertical,
                   options: nil)
         self.viewModel = viewModel
+        currentPage = 0
         dataSource = self
         delegate = self
         
@@ -42,8 +43,6 @@ class SurveyPageViewController: UIPageViewController {
     }
     
     func surveyViewController(_ viewModel: SurveyViewModel) -> SurveyViewController {
-        weak var weak = self
-        
         let transitions = SurveyViewTransitions()
         let surveyViewController = SurveyViewController(viewModel: viewModel, transitions: transitions)
         return surveyViewController
@@ -52,31 +51,8 @@ class SurveyPageViewController: UIPageViewController {
     func viewControllerAtIndex(_ index:Int) -> UIViewController {
         let surveyViewModel = self.viewModel.viewModel(at: index)
         let controller = surveyViewController(surveyViewModel)
+        controller.pageIndex = index
         return controller
-    }
-    
-    private func swipeToNextPreviousSurveyOrClose() {
-        var shouldDismiss = false
-        var direction:UIPageViewControllerNavigationDirection = .forward
-        if currentPage < viewModel.numberOfSurveys {
-            direction = .forward
-        } else {
-            if viewModel.numberOfSurveys > 0 {
-                currentPage = currentPage - 1
-                direction = .reverse
-            } else {
-                shouldDismiss = true
-            }
-        }
-        if shouldDismiss {
-        //    transitions.onClose()
-        } else {
-            let controller = viewControllerAtIndex(currentPage)
-            setViewControllers([controller],
-                               direction: direction,
-                               animated: true,
-                               completion: nil)
-        }
     }
 
 }
