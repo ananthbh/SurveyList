@@ -21,6 +21,8 @@ class SurveyPageViewController: UIPageViewController {
     private var viewModel: SurveyPageViewModel!
     private var transitions: SurveyPageViewTransitions!
     private var currentPage = 0
+    private var isFetchingSurveys = false
+    var page = 1
     
     convenience init(viewModel:SurveyPageViewModel, transitions: SurveyPageViewTransitions) {
         self.init(transitionStyle: .scroll,
@@ -37,9 +39,10 @@ class SurveyPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.fetchSurveys {
-            let controller = self.viewControllerAtIndex(self.currentPage)
-            self.setViewControllers([controller], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+        self.showHUD()
+        fetchSurveys(page: page) {
+            self.hideHUD()
+            self.setupNavigationbarandButtons()
         }
     }
 
@@ -62,9 +65,41 @@ class SurveyPageViewController: UIPageViewController {
         controller.pageIndex = index
         return controller
     }
+    
+    func setupNavigationbarandButtons() {
+        let leftBarButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reload))
+        leftBarButton.tintColor = UIColor.white
+        self.navigationItem.leftBarButtonItem = leftBarButton
+        
+        let rightBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "hamburger"), style: .plain, target: self, action: nil)
+        rightBarButton.tintColor = UIColor.white
+        self.navigationItem.rightBarButtonItem = rightBarButton
+        
+    }
+    
+    @objc func reload() {
+        if isFetchingSurveys { return }
+        isFetchingSurveys = true
+        self.showHUD()
+        self.viewModel.removeAllSurveys()
+        self.currentPage = 0
+        fetchSurveys(page: 1){
+            self.hideHUD()
+            self.isFetchingSurveys = false
+        }
+    }
+    
+    func fetchSurveys(page: Int, completion:@escaping () -> ()) {
+        viewModel.fetchSurveys(page: page) {
+            let controller = self.viewControllerAtIndex(self.currentPage)
+            self.setViewControllers([controller], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+            completion()
+        }
+    }
 
 }
 
+extension SurveyPageViewController: HUDRenderer { }
 
 extension SurveyPageViewController: UIPageViewControllerDataSource {
     
@@ -111,9 +146,15 @@ extension SurveyPageViewController: UIPageViewControllerDelegate {
         if let controller = pageViewController.viewControllers?.last as? PageContentViewController {
             currentPage = controller.pageIndex
             print("currentPage: \(currentPage)")
+            if viewModel.numberOfSurveys - currentPage == 3 {
+                print("will fetch now")
+                self.page += 1
+                self.fetchSurveys(page: page, completion: {
+                    print("done fetching new surveys")
+                })
+            }
         }
     }
-    
     
 }
 

@@ -11,7 +11,8 @@ import Foundation
 protocol SurveyPageViewModel {
     func viewModel(at index:Int) -> SurveyViewModel
     var numberOfSurveys: Int { get }
-    func fetchSurveys(completion:@escaping () -> ())
+    func fetchSurveys(page: Int, completion:@escaping () -> ())
+    func removeAllSurveys()
 }
 
 class SurveyPageViewModelImpl: SurveyPageViewModel {
@@ -24,15 +25,16 @@ class SurveyPageViewModelImpl: SurveyPageViewModel {
         self.provider = provider
     }
     
-    func fetchSurveys(completion:@escaping () -> ()) {
-        self.provider.request(.surveys) { (result) in
+    func fetchSurveys(page: Int, completion:@escaping () -> ()) {
+        self.provider.request(.surveys(page: page)) { (result) in
             switch result {
             case .success(let response):
                 do {
                     let surveys = try response.map([Survey].self)
-                    self.surveys = surveys
+                    let overallSurveys = self.surveys + surveys
+                    self.surveys = overallSurveys
+                    print("the total fetched are \(surveys.count)")
                     completion()
-                    print("the surveys are \(surveys.count)")
                 } catch {
                     print("failed fetching surveys")
                 }
@@ -50,6 +52,10 @@ class SurveyPageViewModelImpl: SurveyPageViewModel {
         let survey = surveys[index]
         let viewModel = SurveyViewModel(survey: survey, provider: self.provider)
         return viewModel
+    }
+    
+    func removeAllSurveys() {
+        surveys.removeAll()
     }
     
 }

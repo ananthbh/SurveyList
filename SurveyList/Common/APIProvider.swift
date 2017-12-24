@@ -12,7 +12,7 @@ import Alamofire
 enum SurveyAPIProvider: TargetType {
     
     case authenticate
-    case surveys
+    case surveys(page:Int)
     
 }
 extension SurveyAPIProvider {
@@ -21,7 +21,7 @@ extension SurveyAPIProvider {
     public var path: String {
         switch self {
         case .authenticate: return "oauth/token"
-        case .surveys: return "surveys.json"
+        case .surveys(let page): return "surveys.json"
         }
     }
     
@@ -42,17 +42,16 @@ extension SurveyAPIProvider {
     
     public var parameters: [String: Any]? {
         switch self {
-        
         case .authenticate:
             var params = [String: Any]()
             params["grant_type"] = "password"
             params["username"] = "carlos@nimbl3.com"
             params["password"] = "antikera"
             return params
-        case .surveys:
+        case .surveys(let page):
             var params = [String:Any]()
-            params["page"] = 1
-            params["per_page"] = 3
+            params["page"] = page
+            params["per_page"] = 5
             return params
         default:
             return nil
