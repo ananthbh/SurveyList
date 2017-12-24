@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 
 struct SurveyViewTransitions {
-    
+    let onTakeSurveyButtonTapped: EmptyClosureType
 }
 
 
@@ -22,6 +22,8 @@ class SurveyViewController: UIViewController, PageContentViewController {
     
     var viewModel: SurveyViewModel!
     var transitions: SurveyViewTransitions!
+    
+    private let disposeBag = DisposeBag()
     
     convenience init(viewModel: SurveyViewModel,
                      transitions: SurveyViewTransitions) {
@@ -62,6 +64,12 @@ class SurveyViewController: UIViewController, PageContentViewController {
         let filter = AspectScaledToFillSizeFilter(size: coverImage.frame.size)
         
         coverImage.af_setImage(withURLRequest: viewModel.coverImageRequest, placeholderImage: #imageLiteral(resourceName: "placeholder"), filter: filter, imageTransition: UIImageView.ImageTransition.crossDissolve(0.2), completion: nil)
+    }
+    
+    func setupTakeSurveyButton() {
+        takeSurveyButton.rx.tap.subscribe(onNext:{
+            self.transitions.onTakeSurveyButtonTapped()
+        }).disposed(by: disposeBag)
     }
 
     
