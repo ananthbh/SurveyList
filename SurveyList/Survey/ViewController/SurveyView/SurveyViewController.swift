@@ -72,8 +72,7 @@ class SurveyViewController: UIViewController, PageContentViewController {
             self.transitions.onTakeSurveyButtonTapped()
         }).disposed(by: disposeBag)
         
-        takeSurveyButton.backgroundColor = UIColor.red
-        takeSurveyButton.layer.cornerRadius = 10
+        takeSurveyButton.layer.cornerRadius = self.takeSurveyButton.bounds.height / 2
         takeSurveyButton.setTitle("Take the Survey", for: .normal)
     }
 
