@@ -21,8 +21,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BjH-79-WUA">
-                    <rect key="frame" x="158.5" y="319" width="59.5" height="30"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BjH-79-WUA">
+                    <rect key="frame" x="0.0" y="319" width="375" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -31,7 +31,9 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="BjH-79-WUA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="7Sn-IO-TMF"/>
+                <constraint firstItem="BjH-79-WUA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="CRt-Ki-Qth"/>
                 <constraint firstItem="BjH-79-WUA" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="f9H-Zf-Vez"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BjH-79-WUA" secondAttribute="trailing" id="wJX-17-6zy"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>

@@ -44,6 +44,7 @@ class SurveyPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "SURVEYS"
         self.showHUD()
         fetchSurveys(page: page) {
             self.hideHUD()

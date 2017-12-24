@@ -47,6 +47,7 @@ final class AppCoordinator {
     
         self.window.rootViewController = navigationController
         self.window.makeKeyAndVisible()
+        configureNavigationBar()
     }
     
     public func start() {
@@ -92,5 +93,18 @@ final class AppCoordinator {
                 print("failed in fetching data")
             }
         }
+    }
+    
+    func configureNavigationBar() {
+        let backgroundColor = UIColor(red: 20.0 / 255, green: 30.0 / 255, blue: 50.0 / 255, alpha: 1.0)
+        let foregroundColor = UIColor.white
+        UINavigationBar.appearance().barTintColor = backgroundColor
+        UINavigationBar.appearance().tintColor = foregroundColor
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: foregroundColor]
+        UILabel.appearance().backgroundColor = .clear
+        
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        UINavigationBar.appearance().backgroundColor = backgroundColor.withAlphaComponent(0.5)
+        UINavigationBar.appearance().isTranslucent = true
     }
 }
