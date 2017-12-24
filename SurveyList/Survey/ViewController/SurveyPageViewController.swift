@@ -12,16 +12,22 @@ protocol PageContentViewController {
     var pageIndex: Int { get set }
 }
 
+struct SurveyPageViewTransitions {
+    let handleTakeSurveyButtonTap: EmptyClosureType
+}
+
 class SurveyPageViewController: UIPageViewController {
 
     private var viewModel: SurveyPageViewModel!
+    private var transitions: SurveyPageViewTransitions!
     private var currentPage = 0
     
-    convenience init(viewModel:SurveyPageViewModel) {
+    convenience init(viewModel:SurveyPageViewModel, transitions: SurveyPageViewTransitions) {
         self.init(transitionStyle: .scroll,
                   navigationOrientation: .vertical,
                   options: nil)
         self.viewModel = viewModel
+        self.transitions = transitions
         currentPage = 0
         dataSource = self
         delegate = self
@@ -43,7 +49,9 @@ class SurveyPageViewController: UIPageViewController {
     }
     
     func surveyViewController(_ viewModel: SurveyViewModel) -> SurveyViewController {
-        let transitions = SurveyViewTransitions()
+        let transitions = SurveyViewTransitions(onTakeSurveyButtonTapped: {
+            self.transitions.handleTakeSurveyButtonTap()
+        })
         let surveyViewController = SurveyViewController(viewModel: viewModel, transitions: transitions)
         return surveyViewController
     }

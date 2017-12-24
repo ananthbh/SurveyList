@@ -44,6 +44,7 @@ class SurveyViewController: UIViewController, PageContentViewController {
         setSurveyName()
         setSurveyDescription()
         setSurveyCoverImage()
+        setupTakeSurveyButton()
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,6 +71,10 @@ class SurveyViewController: UIViewController, PageContentViewController {
         takeSurveyButton.rx.tap.subscribe(onNext:{
             self.transitions.onTakeSurveyButtonTapped()
         }).disposed(by: disposeBag)
+        
+        takeSurveyButton.backgroundColor = UIColor.red
+        takeSurveyButton.layer.cornerRadius = 10
+        takeSurveyButton.setTitle("Take the Survey", for: .normal)
     }
 
     

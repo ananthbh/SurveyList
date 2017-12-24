@@ -25,9 +25,19 @@ final class SurveyCoordinator {
     
     func surveyPageViewController() -> SurveyPageViewController {
         let viewModel = SurveyPageViewModelImpl(provider: self.networkProvider)
+        let transitions = SurveyPageViewTransitions(handleTakeSurveyButtonTap: surveyDetailViewController)
         self.surveyPageViewModel = viewModel
-        let surveyPageViewController = SurveyPageViewController(viewModel: viewModel)
+        let surveyPageViewController = SurveyPageViewController(viewModel: viewModel, transitions: transitions)
         return surveyPageViewController
+    }
+    
+    func surveyDetailViewController() {
+        let viewModel = SurveyDetailViewModel(provider: self.networkProvider)
+        let transitions = SurveyDetailScreenTransitions(onBackButtonTapped: {
+            self.rootController.popViewController(animated: true)
+        })
+        let surveyDetailViewController = SurveyDetailViewController(viewModel: viewModel, transitions: transitions)
+        self.rootController.pushViewController(surveyDetailViewController, animated: true)
     }
     
     
