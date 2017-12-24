@@ -25,6 +25,12 @@ class SurveyViewController: UIViewController {
         self.transitions = transitions
     }
     
+    @IBOutlet weak var coverImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var takeSurveyButton: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
