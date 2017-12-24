@@ -36,22 +36,36 @@ final class AppCoordinator {
     fileprivate var navigationController = UINavigationController()
     fileprivate var window: UIWindow
     
+    fileprivate var currentSurveyCoordinator: SurveyCoordinator?
+    
     public init(window: UIWindow) {
         self.window = window
         
         navigationController.view.backgroundColor = UIColor.white
         
+        currentSurveyCoordinator = SurveyCoordinator(rootController: navigationController, networkProvider: networkProvider)
+    
         self.window.rootViewController = navigationController
         self.window.makeKeyAndVisible()
     }
     
     public func start() {
-        networkProvider.onUserTokenDied = { [weak self] in
-            guard let uSelf = self else  { return }
-            uSelf.checkAuthToken {
-                print("auth token fetched")
+        
+        if credentialsProvider.realToken != nil {
+            enterApp()
+            networkProvider.onUserTokenDied = { [weak self] in
+                guard let uSelf = self else  { return }
+                uSelf.checkAuthToken {
+                    print("auth token fetched")
+                }
             }
+        } else {
+            checkAuthToken { }
         }
+    }
+    
+    private func enterApp() {
+        currentSurveyCoordinator?.surveyViewController()
     }
     
     fileprivate func checkAuthToken(completion:() -> ()) {
@@ -68,6 +82,7 @@ final class AppCoordinator {
                         self.credentialsProvider.createdAt = created
                         self.credentialsProvider.tokenType = tokenType
                         self.credentialsProvider.saveCredentials()
+                        self.enterApp()
                     }
                 } catch {
                     print("failure in fetching auth token")
