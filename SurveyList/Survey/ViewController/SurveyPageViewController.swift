@@ -108,7 +108,8 @@ class SurveyPageViewController: UIPageViewController {
         self.showHUD()
         self.viewModel.removeAllSurveys()
         self.currentPage = 0
-        fetchSurveys(page: 1){
+        self.page = 1
+        fetchSurveys(page: page){
             self.hideHUD()
             self.isFetchingSurveys = false
         }
