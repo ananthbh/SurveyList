@@ -31,8 +31,8 @@ final class SurveyCoordinator {
         return surveyPageViewController
     }
     
-    func surveyDetailViewController() {
-        let viewModel = SurveyDetailViewModel(provider: self.networkProvider)
+    func surveyDetailViewController(_ survey: Survey) {
+        let viewModel = SurveyDetailViewModel(survey: survey, provider: self.networkProvider)
         let transitions = SurveyDetailScreenTransitions(onBackButtonTapped: {
             self.rootController.popViewController(animated: true)
         })
