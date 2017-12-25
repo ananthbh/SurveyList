@@ -51,7 +51,7 @@ extension SurveyAPIProvider {
         case .surveys(let page):
             var params = [String:Any]()
             params["page"] = page
-            params["per_page"] = 5
+            params["per_page"] = 6
             return params
         default:
             return nil
