@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 
 struct SurveyViewTransitions {
-    let onTakeSurveyButtonTapped: EmptyClosureType
+    let onTakeSurveyButtonTapped: (Survey) -> Void
 }
 
 
@@ -69,7 +69,7 @@ class SurveyViewController: UIViewController, PageContentViewController {
     
     func setupTakeSurveyButton() {
         takeSurveyButton.rx.tap.subscribe(onNext:{
-            self.transitions.onTakeSurveyButtonTapped()
+            self.transitions.onTakeSurveyButtonTapped(self.viewModel.survey)
         }).disposed(by: disposeBag)
         
         takeSurveyButton.layer.cornerRadius = self.takeSurveyButton.bounds.height / 2

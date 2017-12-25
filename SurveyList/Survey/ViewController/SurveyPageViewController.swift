@@ -13,7 +13,7 @@ protocol PageContentViewController {
 }
 
 struct SurveyPageViewTransitions {
-    let handleTakeSurveyButtonTap: EmptyClosureType
+    let handleTakeSurveyButtonTap: (Survey) -> Void
 }
 
 class SurveyPageViewController: UIPageViewController {
@@ -71,9 +71,9 @@ class SurveyPageViewController: UIPageViewController {
     }
     
     func surveyViewController(_ viewModel: SurveyViewModel) -> SurveyViewController {
-        let transitions = SurveyViewTransitions(onTakeSurveyButtonTapped: {
-            self.transitions.handleTakeSurveyButtonTap()
-        })
+        let transitions = SurveyViewTransitions { (survey) in
+            self.transitions.handleTakeSurveyButtonTap(survey)
+        }
         let surveyViewController = SurveyViewController(viewModel: viewModel, transitions: transitions)
         return surveyViewController
     }

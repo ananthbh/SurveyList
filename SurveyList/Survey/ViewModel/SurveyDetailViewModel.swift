@@ -12,12 +12,14 @@ import Foundation
 final class SurveyDetailViewModel {
     
     let provider: NetworkProvider!
+    let survey: Survey!
     
-    init(provider: NetworkProvider) {
+    init(survey: Survey, provider: NetworkProvider) {
         self.provider = provider
+        self.survey = survey
     }
     
     var displayEmptyText: String {
-        return "Welcome to Survey Detail Screen"
+        return "Welcome to \(survey.name)"
     }
 }
