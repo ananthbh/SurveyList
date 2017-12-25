@@ -31,11 +31,10 @@ class SurveyPageViewModelImpl: SurveyPageViewModel {
             case .success(let response):
                 do {
                     let surveys = try response.map([Survey].self)
-                    let overallSurveys = self.surveys + surveys
-                    self.surveys = overallSurveys
-                    print("the total fetched are \(surveys.count)")
+                    self.surveys.append(contentsOf: surveys)
                     completion()
                 } catch {
+                    completion()
                     print("failed fetching surveys")
                 }
             case .failure:
@@ -55,7 +54,7 @@ class SurveyPageViewModelImpl: SurveyPageViewModel {
     }
     
     func removeAllSurveys() {
-        surveys.removeAll()
+        surveys = []
     }
     
 }
