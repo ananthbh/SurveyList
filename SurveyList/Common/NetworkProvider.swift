@@ -37,6 +37,7 @@ final class NetworkProvider: MoyaProvider<SurveyAPIProvider>, Service {
                     let json = try response.mapJSON() as! [String:Any]
                     if let token = json["access_token"] as? String,
                         let expires = json["expires_in"] as? Double, let created = json["created_at"] as? Double, let tokenType = json["token_type"] as? String {
+                        self.credentialsProvider.realToken = tokenType + " " + token
                         self.credentialsProvider.token = token
                         self.credentialsProvider.expires = expires
                         self.credentialsProvider.createdAt = created
